@@ -1,35 +1,51 @@
 import config
 import telebot
-from tests import test
+import logging
+from tests import Junior, Middle, Senior
 from telebot import types
 
 
 bot = telebot.TeleBot(config.TOKEN)
+logger = telebot.logger
+telebot.logger.setLevel(logging.DEBUG)
 replica = {}
 markup = types.ForceReply(selective=False)
 count = 0
+test = {}
 
 
 @bot.message_handler(commands=['start', 'info'])
 def start_messages(message):
-    global count
     if message.text.lower() == '/start':
-        bot.send_message(message.chat.id, 'You start Test! Good luck!')
-        count = 1
-    if count == 1:
-        if count <= len(test):
-            bot.send_message(message.chat.id, f'{test[count]}', reply_markup=markup)
-            count += 1
+        bot.send_message(message.chat.id, 'Напишите предпочтительный уровень теста: Junior, Middle, Senior')
     if message.text.lower() == '/info':
         bot.send_message(message.chat.id, 'Этот тест, является проверкой ваших знаний предмета Тестирование. Для того чтобы начать наберите /start')
+
 
 # handler для теста
 @bot.message_handler(content_types=['text'])
 def test_start(message):
     global count
-    if message.text.lower() != 'start' and message.text.lower() != 'info':
-        replica[count] = message.text
-    if count == 2:
+    global test
+    global Junior
+    global Middle
+    global Senior
+    if message.text.lower() != 'start' and message.text.lower() != 'info' and message.text.lower() != 'junior' and message.text.lower() != 'middle' and message.text.lower() != 'senior':
+        replica[count-1] = message.text
+    if message.text.lower() == 'junior' or message.text.lower() == 'middle' or message.text.lower() == 'senior':
+        if message.text.lower() == 'junior':
+            test = Junior
+            count = 1
+        elif message.text.lower() == 'middle':
+            test = Middle
+            count = 1
+        elif message.text.lower() == 'senior':
+            test = Senior
+            count = 1
+        if count == 1:
+            bot.send_message(message.chat.id, f'{test[count]}', reply_markup=markup)
+            count += 1
+    elif count == 2:
         if count <= len(test):
             bot.send_message(message.chat.id, f'{test[count]}', reply_markup=markup)
             count += 1
