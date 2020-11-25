@@ -92,8 +92,14 @@ def test_start(message):
             count += 1
         else:
             bot.send_message(message.chat.id, f'Вопросы кончились, тест пройден!')
+            bot.send_message(message.chat.id, f'{replica} {Usrs}')
             count = 0
             send_messege(Usrs, replica)
+            bot.send_message(message.chat.id, f'{replica} {Usrs}')
+            replica.clear()
+            Usrs.clear()
+            bot.send_message(message.chat.id, f'{replica} {Usrs}')
+
 
 
 bot.polling()
