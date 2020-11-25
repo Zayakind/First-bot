@@ -37,15 +37,15 @@ def test_start(message):
     if message.text.lower() == 'junior' or message.text.lower() == 'middle' or message.text.lower() == 'senior':
         if message.text.lower() == 'junior':
             test = Junior
-            Usrs.append('junior')
+            Usrs.append(message.chat.first_name + ' ' + message.chat.last_name + ' Junior')
             count = 1
         elif message.text.lower() == 'middle':
             test = Middle
-            Usrs.append('middle')
+            Usrs.append(message.chat.first_name + ' ' + message.chat.last_name + ' Middle')
             count = 1
         elif message.text.lower() == 'senior':
             test = Senior
-            Usrs.append('senior')
+            Usrs.append(message.chat.first_name + ' ' + message.chat.last_name + ' Senior')
             count = 1
         if count == 1:
             bot.send_message(message.chat.id, f'{test[count]}', reply_markup=markup)
@@ -92,13 +92,10 @@ def test_start(message):
             count += 1
         else:
             bot.send_message(message.chat.id, f'Вопросы кончились, тест пройден!')
-            bot.send_message(message.chat.id, f'{replica} {Usrs}')
             count = 0
             send_messege(Usrs, replica)
-            bot.send_message(message.chat.id, f'{replica} {Usrs}')
             replica.clear()
             Usrs.clear()
-            bot.send_message(message.chat.id, f'{replica} {Usrs}')
 
 
 
