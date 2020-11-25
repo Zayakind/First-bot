@@ -2,6 +2,7 @@ import config
 import telebot
 from tests import Junior, Middle, Senior
 from telebot import types
+from send_mail import send_messege
 
 #обьявляем бота, кнопку и нужные переменные для работы.
 bot = telebot.TeleBot(config.TOKEN)
@@ -92,6 +93,7 @@ def test_start(message):
         else:
             bot.send_message(message.chat.id, f'Вопросы кончились, тест пройден!')
             count = 0
+            send_messege(Usrs, replica)
 
 
 bot.polling()
