@@ -5,7 +5,7 @@ from telebot import types
 
 
 bot = telebot.TeleBot(config.TOKEN)
-replica = []
+replica = {}
 markup = types.ForceReply(selective=False)
 count = 0
 
@@ -27,10 +27,8 @@ def start_messages(message):
 @bot.message_handler(content_types=['text'])
 def test_start(message):
     global count
-    if message.text.lower() != 'вопрос' and message.text.lower() != 'rpl':
-        replica.append(message.text)
-    if message.text.lower() == 'rpl':
-        bot.send_message(message.chat.id, f'{replica}')
+    if message.text.lower() != 'start' and message.text.lower() != 'info':
+        replica[count] = message.text
     if count == 2:
         if count <= len(test):
             bot.send_message(message.chat.id, f'{test[count]}', reply_markup=markup)
@@ -69,27 +67,6 @@ def test_start(message):
     elif count == 7:
         if count <= len(test):
             bot.send_message(message.chat.id, f'{test[count]}', reply_markup=markup)
-            count += 1
-        else:
-            bot.send_message(message.chat.id, f'Вопросы кончились, тест пройден!')
-            count = 0
-    elif count == 8:
-        if count <= len(test):
-            bot.send_message(message.chat.id, f'{test[count]}', reply_markup=markup)
-            count += 1
-        else:
-            bot.send_message(message.chat.id, f'Вопросы кончились, тест пройден!')
-            count = 0
-    elif count == 9:
-        if count <= len(test):
-            bot.send_message(message.chat.id, f'{test[count]}')
-            count += 1
-        else:
-            bot.send_message(message.chat.id, f'Вопросы кончились, тест пройден!')
-            count = 0
-    elif count == 10:
-        if count <= len(test):
-            bot.send_message(message.chat.id, f'{test[count]}')
             count += 1
         else:
             bot.send_message(message.chat.id, f'Вопросы кончились, тест пройден!')
