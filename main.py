@@ -1,19 +1,17 @@
 import config
 import telebot
-import logging
 from tests import Junior, Middle, Senior
 from telebot import types
 
-
+#обьявляем бота, кнопку и нужные переменные для работы.
 bot = telebot.TeleBot(config.TOKEN)
-logger = telebot.logger
-telebot.logger.setLevel(logging.DEBUG)
 replica = {}
 markup = types.ForceReply(selective=False)
 count = 0
 test = {}
+Usrs = []
 
-
+# Команды для начала и информации
 @bot.message_handler(commands=['start', 'info'])
 def start_messages(message):
     if message.text.lower() == '/start':
@@ -30,21 +28,28 @@ def test_start(message):
     global Junior
     global Middle
     global Senior
+    global Usrs
+    #Записывание ответов в словарь 
     if message.text.lower() != 'start' and message.text.lower() != 'info' and message.text.lower() != 'junior' and message.text.lower() != 'middle' and message.text.lower() != 'senior':
         replica[count-1] = message.text
+    #Присваивание тестам вариант который выбирает пользователь, запуск теста и запись в список какой пользователь выбрал тест
     if message.text.lower() == 'junior' or message.text.lower() == 'middle' or message.text.lower() == 'senior':
         if message.text.lower() == 'junior':
             test = Junior
+            Usrs.append('junior')
             count = 1
         elif message.text.lower() == 'middle':
             test = Middle
+            Usrs.append('middle')
             count = 1
         elif message.text.lower() == 'senior':
             test = Senior
+            Usrs.append('senior')
             count = 1
         if count == 1:
             bot.send_message(message.chat.id, f'{test[count]}', reply_markup=markup)
             count += 1
+    # Вопросы для теста
     elif count == 2:
         if count <= len(test):
             bot.send_message(message.chat.id, f'{test[count]}', reply_markup=markup)
